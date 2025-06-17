@@ -13,7 +13,14 @@ P = ParamSpec("P")
 
 
 def effect(func: Callable[P, T]) -> Callable[P, Effect[T]]:
-    """Decorator to convert a function into an effect"""
+    """Decorator to convert a function into an effect
+
+    Args:
+        func (Callable[P, T]): The function to convert into an effect.
+
+    Returns:
+        Callable[P, Effect[T]]: The decorator function.
+    """
 
     @functools.wraps(func)
     def wrapper(*args: P.args, **kwargs: P.kwargs) -> Effect[T]:
@@ -23,12 +30,26 @@ def effect(func: Callable[P, T]) -> Callable[P, Effect[T]]:
 
 
 def io(func: Callable[P, T]) -> Callable[P, Effect[T]]:
-    """Decorator to convert a function into an IO effect (alias for effect)"""
+    """Decorator to convert a function into an IO effect (alias for effect)
+
+    Args:
+        func (Callable[P, T]): The function to convert into an IO effect.
+
+    Returns:
+        Callable[P, Effect[T]]: The decorator function.
+    """
     return effect(func)
 
 
 def safe(func: Callable[P, Result[T, E]]) -> Callable[P, Effect[Result[T, E]]]:
-    """Decorator to convert a function into a safe effect"""
+    """Decorator to convert a function into a safe effect
+
+    Args:
+        func (Callable[P, Result[T, E]]): The function to convert into a safe effect.
+
+    Returns:
+        Callable[P, Effect[Result[T, E]]]: The decorator function.
+    """
 
     @functools.wraps(func)
     def wrapper(*args: P.args, **kwargs: P.kwargs) -> Effect[Result[T, E]]:
