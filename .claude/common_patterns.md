@@ -10,9 +10,9 @@
 - **コード実行**: `uv run src/{package_name}`  (ディレクトリを指定しても実行可能)
 - **テスト**: `pytest`
 - **テストの書き方**: 関数には必ず型ヒントを書き、テストコードは`tests`ディレクトリに配置する。
-- **フォーマット**: `uvx ruff format (src/hogehoge|tests)`
-- **リント**: `uvx ruff lint (src/hogehoge|tests)`
-- **型チェック**: `uvx mypy --config-file=pyproject.toml`
+- **フォーマット**: `uvx ruff format src tests`
+- **リント**: `uvx ruff lint src tests`
+- **型チェック**: `uvx mypy src tests`
 
 ### Rust開発
 
