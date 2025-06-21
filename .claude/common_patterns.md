@@ -6,10 +6,13 @@
 
 ### Python開発
 
+- **パッケージの管理**: `uv`
 - **コード実行**: `uv run src/{package_name}`  (ディレクトリを指定しても実行可能)
-- **コードチェック**: VSCodeタスク`py-code-check`を使用（pytest、ruff、mypyを実行）
-- **ドキュメント**: VSCodeタスク`py-docs-gen`を使用（Sphinxドキュメントを生成）
-- **Pre-commit**: VSCodeタスク`py-pre-commit`を使用
+- **テスト**: `pytest`
+- **テストの書き方**: 関数には必ず型ヒントを書き、テストコードは`tests`ディレクトリに配置する。
+- **フォーマット**: `uvx ruff format (src/hogehoge|tests)`
+- **リント**: `uvx ruff lint (src/hogehoge|tests)`
+- **型チェック**: `uvx mypy --config-file=pyproject.toml`
 
 ### Rust開発
 
