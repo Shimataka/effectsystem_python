@@ -6,6 +6,7 @@ This module provides the implementations of the effect system.
 
 import concurrent.futures
 import dataclasses
+import time
 from abc import ABC, abstractmethod
 from collections.abc import Callable
 from typing import (
@@ -509,8 +510,6 @@ class RetriedEffect(Effect[T]):
         Returns:
             T: The result of the retried effect.
         """
-        import time
-
         last_exception = Exception("Max retries reached")
 
         for i in range(self.max_retries):
