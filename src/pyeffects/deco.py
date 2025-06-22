@@ -4,6 +4,7 @@ from typing import ParamSpec, TypeVar
 
 from pyresults import Result
 
+from pyeffects.eff import Eff, FnEff
 from pyeffects.effect import Effect, FnEffect
 
 T = TypeVar("T")
@@ -54,5 +55,19 @@ def safe(func: Callable[P, Result[T, E]]) -> Callable[P, Effect[Result[T, E]]]:
     @functools.wraps(func)
     def wrapper(*args: P.args, **kwargs: P.kwargs) -> Effect[Result[T, E]]:
         return FnEffect(lambda: func(*args, **kwargs))
+
+    return wrapper
+
+
+def eff(func: Callable[P, T]) -> Callable[P, Eff[T, object]]:
+    """Decorator to convert a function into an effect
+
+    Args:
+        func (Callable[P, T]): The function to convert into an effect.
+    """
+
+    @functools.wraps(func)
+    def wrapper(*args: P.args, **kwargs: P.kwargs) -> Eff[T, object]:
+        return FnEff(lambda: func(*args, **kwargs))
 
     return wrapper
