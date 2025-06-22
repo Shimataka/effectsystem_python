@@ -8,7 +8,7 @@ PyEffectsは、Pythonにおいて副作用（IO、ネットワーク通信、デ
 
 ## 特徴
 
-- **🚀 遅延実行**: 副作用は`unwrap()`が呼ばれるまで実行されません
+- **🚀 遅延実行**: 副作用は`unwrap()`か`run()`が呼ばれるまで実行されません
 - **🔗 メソッドチェーン**: 関数型操作による流暢なプログラミング体験
 - **🛡️ 型安全性**: TypeHintsによる完全な型サポート
 - **🔄 エラーハンドリング**: `recover`と`retry`による堅牢なエラー処理
@@ -22,9 +22,30 @@ PyEffectsは、Pythonにおいて副作用（IO、ネットワーク通信、デ
 pip install git+https://github.com/Shimataka/effectsystem_python.git
 ```
 
-## クイックスタート
+## `Effect` クラスのクイックスタート
 
-### 基本的な使用方法
+### 基本的な使用方法 (1)
+
+```python
+from pyeffects import effect, Effect
+from pathlib import Path
+
+# 関数をエフェクトに変換
+def read_file(path: Path) -> str:
+    with path.open() as f:
+        return f.read()
+
+# エフェクトの合成と実行
+result = Effect[str](read_file(Path("input.txt"))
+          .map(str.upper)                    # 大文字変換
+          .filter(lambda s: len(s) > 0)      # 空文字列をフィルタ
+          .tap(lambda s: print(f"処理中: {s[:10]}..."))  # ログ出力
+          .unwrap())                         # 実行
+
+print(f"結果: {result}")
+```
+
+### デコレータ (1)
 
 ```python
 from pyeffects import effect, Effect
@@ -36,10 +57,53 @@ def read_file(path: Path) -> str:
     with path.open() as f:
         return f.read()
 
-@effect
-def write_file(path: Path, content: str) -> None:
-    with path.open("w") as f:
-        f.write(content)
+# エフェクトの合成と実行
+result = (read_file(Path("input.txt"))
+          .map(str.upper)                    # 大文字変換
+          .filter(lambda s: len(s) > 0)      # 空文字列をフィルタ
+          .tap(lambda s: print(f"処理中: {s[:10]}..."))  # ログ出力
+          .unwrap())                         # 実行
+
+print(f"結果: {result}")
+```
+
+### エラーハンドリング (1)
+
+```python
+# 堅牢なエラーハンドリング
+safe_result = (read_file(Path("config.json"))
+               .retry(max_retries=3, delay=1.0)    # 3回リトライ
+               .timeout(5.0)                        # 5秒でタイムアウト
+               .recover(lambda e: "{}")            # エラー時はデフォルト値
+               .unwrap())
+
+print(f"結果: {safe_result}")
+```
+
+### 並列処理 (1)
+
+```python
+# 複数のファイルを並列処理
+files = [Path(f"file{i}.txt") for i in range(5)]
+read_effects = [read_file(path) for path in files]
+
+all_contents = Effect[str].parallel(read_effects).unwrap()
+print(f"読み込んだファイル数: {len(all_contents)}")
+```
+
+## `Eff` クラスのクイックスタート
+
+### 基本的な使用方法 (2)
+
+```python
+from pyeffects import eff, Eff
+from pathlib import Path
+
+# 関数をエフェクトに変換
+@eff
+def read_file(path: Path) -> str:
+    with path.open() as f:
+        return f.read()
 
 # エフェクトの合成と実行
 result = (read_file(Path("input.txt"))
@@ -51,25 +115,27 @@ result = (read_file(Path("input.txt"))
 print(f"結果: {result}")
 ```
 
-### エラーハンドリング
+### エラーハンドリング (2)
 
 ```python
 # 堅牢なエラーハンドリング
 safe_result = (read_file(Path("config.json"))
-               .retry(max_attempts=3, delay=1.0)    # 3回リトライ
+               .retry(max_retries=3, delay=1.0)    # 3回リトライ
                .timeout(5.0)                        # 5秒でタイムアウト
-               .recover(lambda e: "{}"))            # エラー時はデフォルト値
+               .recover(lambda e: "{}")            # エラー時はデフォルト値
                .unwrap())
+
+print(f"結果: {safe_result}")
 ```
 
-### 並列処理
+### 並列処理 (2)
 
 ```python
 # 複数のファイルを並列処理
 files = [Path(f"file{i}.txt") for i in range(5)]
 read_effects = [read_file(path) for path in files]
 
-all_contents = Effect.parallel(read_effects).unwrap()
+all_contents = Eff[str, Exception].parallel(read_effects).unwrap()
 print(f"読み込んだファイル数: {len(all_contents)}")
 ```
 
@@ -97,7 +163,7 @@ print(f"読み込んだファイル数: {len(all_contents)}")
     | メソッド | 説明 | 例 |
     |---------|------|-----|
     | `tap(side_effect)` | 副作用実行（値は変更しない） | `.tap(print)` |
-    | `memoize()` | 結果をキャッシュ | `.memoize()` |
+    | `memorize()` | 結果をキャッシュ | `.memorize()` |
 
 - 組み合わせ操作
 
@@ -135,6 +201,20 @@ users = (DatabaseEffect("SELECT * FROM users WHERE age > ?", {"age": 18})
 ### 複雑なワークフロー
 
 ```python
+from pyeffects import effect, Effect
+from pathlib import Path
+
+# 関数をエフェクトに変換
+@effect
+def read_file(path: Path) -> str:
+    with path.open() as f:
+        return f.read()
+
+@effect
+def write_file(path: Path, content: str) -> None:
+    with path.open("w") as f:
+        f.write(content)
+
 def data_processing_pipeline(input_path: Path, output_path: Path) -> Effect[str]:
     """データ処理パイプライン"""
     return (read_file(input_path)
@@ -161,7 +241,7 @@ result = data_processing_pipeline(
 def robust_api_workflow(user_id: int) -> Effect[dict]:
     """API呼び出しの堅牢なワークフロー"""
     return (fetch_user_data(user_id)
-            .retry(max_attempts=3, delay=2.0)
+            .retry(max_retries=3, delay=2.0)
             .filter(lambda user: user.get("active", False))
             .flat_map(lambda user: fetch_user_preferences(user["id"]))
             .zip_with(
@@ -236,7 +316,7 @@ class TestEffects(unittest.TestCase):
 ## パフォーマンスの考慮事項
 
 - **遅延実行**: 不要な計算を避けるため、条件分岐と組み合わせて効果的
-- **メモ化**: `memoize()`で重い処理結果をキャッシュ
+- **メモ化**: `memorize()`で重い処理結果をキャッシュ
 - **並列処理**: `parallel()`でI/Oバウンドなタスクを高速化
 - **タイムアウト**: `timeout()`で長時間実行を防止
 
