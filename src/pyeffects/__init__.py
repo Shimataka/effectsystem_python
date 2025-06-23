@@ -1,4 +1,4 @@
 from .alias import Eff, FnEff
-from .effect import Effect
+from .base import Effect
 
 __all__ = ["Eff", "Effect", "FnEff"]

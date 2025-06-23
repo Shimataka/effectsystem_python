@@ -1,7 +1,7 @@
 from collections.abc import Callable
 from typing import TypeVar
 
-from .effect import FnEffect, PureEffect
+from .base import FnEffect, PureEffect
 
 T = TypeVar("T")
 

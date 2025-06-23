@@ -5,8 +5,8 @@ import unittest
 import pytest
 from pyresults import Err, Ok, Result
 
+from pyeffects.base import Effect
 from pyeffects.deco import effect, io, safe
-from pyeffects.effect import Effect
 
 
 class TestEffectDecorator(unittest.TestCase):
