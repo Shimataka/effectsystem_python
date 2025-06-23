@@ -2,16 +2,15 @@
 
 from pathlib import Path
 
+from pyeffects import Effect, FnEff
 from pyeffects.deco import effect, io
-from pyeffects.effect import Effect
 from pyeffects.example import NetworkEffect
 
 if __name__ == "__main__":
     # 1. 関数ベースの使用例
-    @effect
-    def read_file(path: Path) -> str:
+    def read_file(path: Path) -> FnEff[str]:
         with path.open() as f:
-            return f.read()
+            return FnEff(lambda: f.read())
 
     @effect
     def write_file(path: Path, content: str) -> None:
