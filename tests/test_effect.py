@@ -5,7 +5,7 @@ import unittest
 
 import pytest
 
-from pyeffects.effect import (
+from pyeffects.base import (
     Effect,
     FilteredEffect,
     FilteredOptionalEffect,

@@ -1,6 +1,6 @@
 import urllib.request as request
 
-from pyeffects.effect import Effect
+from pyeffects.base import Effect
 
 
 class NetworkEffect(Effect[str]):

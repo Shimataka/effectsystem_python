@@ -4,7 +4,7 @@ from typing import ParamSpec, TypeVar
 
 from pyresults import Result
 
-from pyeffects.effect import Effect, FnEffect
+from pyeffects.base import Effect, FnEffect
 
 T = TypeVar("T")
 U = TypeVar("U")
