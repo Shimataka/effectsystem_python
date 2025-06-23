@@ -27,13 +27,13 @@ pip install git+https://github.com/Shimataka/effectsystem_python.git
 ### 基本的な使用方法
 
 ```python
-from pyeffects import effect, Effect, Eff
+from pyeffects import effect, Effect, FnEff
 from pathlib import Path
 
 # 関数をエフェクトに変換
-def read_file(path: Path) -> Eff[str]:
+def read_file(path: Path) -> FnEff[str]:
     with path.open() as f:
-        return Eff(f.read())
+        return FnEff(lambda: f.read())
 
 @effect
 def write_file(path: Path, content: str) -> None:
