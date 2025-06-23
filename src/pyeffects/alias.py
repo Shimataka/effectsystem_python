@@ -1,6 +1,7 @@
+from collections.abc import Callable
 from typing import TypeVar
 
-from .effect import PureEffect
+from .effect import FnEffect, PureEffect
 
 T = TypeVar("T")
 
@@ -13,3 +14,13 @@ class Eff(PureEffect[T]):
         value: T,
     ) -> None:
         super().__init__(value)
+
+
+class FnEff(FnEffect[T]):
+    """Alias for FnEffect"""
+
+    def __init__(
+        self,
+        func: Callable[[], T],
+    ) -> None:
+        super().__init__(func)

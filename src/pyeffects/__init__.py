@@ -1,4 +1,4 @@
-from .alias import Eff
+from .alias import Eff, FnEff
 from .effect import Effect
 
-__all__ = ["Eff", "Effect"]
+__all__ = ["Eff", "Effect", "FnEff"]
