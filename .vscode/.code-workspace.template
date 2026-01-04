@@ -1,0 +1,86 @@
+{
+    "folders": [
+        {
+            "path": "../"
+        }
+    ],
+    "settings": {
+        //
+        // VSCode editor
+        //
+        // ミニマップを非表示にする
+        "editor.minimap.enabled": true,
+        // 制御文字を表示する(https://qiita.com/rana_kualu/items/3b03961deb003a8a2f1d)
+        "editor.renderControlCharacters": true,
+        // サジェスト一覧の初期表示項目設定
+        "editor.suggestSelection": "first",
+        // ファイルのパンくずリストを表示する
+        "breadcrumbs.enabled": true,
+        // ファイルの末尾を改行で終わらせる
+        "files.insertFinalNewline": true,
+        // 選択行の行番号をハイライトする
+        "editor.renderLineHighlight": "all",
+        // カーソルが滑らかに点滅するように
+        "editor.cursorBlinking": "blink",
+        // カーソルの点滅をアニメーション表示する
+        "editor.cursorSmoothCaretAnimation": "off",
+        // カーソルの外観をブロックに変更
+        "editor.cursorStyle": "line",
+        // ファイルの自動エンコードを実施
+        "files.autoGuessEncoding": true,
+        // 画面全体の表示サイズはデフォルト
+        "window.zoomLevel": -1,
+        // 括弧の対応を色付ける
+        "editor.bracketPairColorization.enabled": true,
+        // 変更監視を除外するパターン定義(https://code.visualstudio.com/docs/setup/linux#_visual-studio-code-is-unable-to-watch-for-file-changes-in-this-large-workspace-error-enospc)
+        "files.watcherExclude": {
+            "**/.git/objects/**": true,
+            "**/.git/subtree-cache/**": true,
+            "**/node_modules/**": true,
+            "**/dataset/**/*.{png,zip,jpg,npz,txt}": true,
+            "**/datasets/**/*.{png,zip,jpg,npz,txt}": true,
+            "**/data/**/*.{png,zip,jpg,npz,txt}": true,
+            "**/.venv/**": true
+        },
+        // クイックサジェストの設定
+        "editor.quickSuggestions": {
+            "other": true,
+            "comments": false,
+            "strings": false,
+        },
+        // コミット文字で提案を受け入れるかどうかを制御します。例えば、JavaScriptではセミコロン(`;`)が提案を受け入れてその文字を入力するコミット文字になることがあります。
+        "editor.acceptSuggestionOnCommitCharacter": true,
+        // Enter キーを押すとサジェストを適用する
+        "editor.acceptSuggestionOnEnter": "on",
+        // クイックサジェストの表示までの遅延時間を設定
+        "editor.quickSuggestionsDelay": 10,
+        // サジェストのトリガーキャラクターを入力すると自動でサジェストを表示する
+        "editor.suggestOnTriggerCharacters": true,
+        // タブを押すと最適なサジェストを挿入し、タブを押すと他のサジェストに移動する
+        "editor.tabCompletion": "on",
+        // サジェストのローカリティボーナスを有効にする
+        "editor.suggest.localityBonus": true,
+        // ワードベースのサジェストを有効にする
+        "editor.wordBasedSuggestions": "matchingDocuments",
+        // パラメーターヒントを有効にする
+        "editor.parameterHints.enabled": true,
+        //
+        // 表示
+        //
+        // エディタの表示設定
+        "editor.renderWhitespace": "boundary",  // 空白の表示
+        "editor.tabSize": 4,  // タブ数
+        // エディタのフォント設定
+        "editor.fontFamily":"'UDEV Gothic 35NFLG'",
+        "editor.fontSize": 11.8,
+        "editor.fontLigatures": true,
+        // ターミナルの表示設定
+        "terminal.integrated.lineHeight": 1.1,
+        // ターミナルのフォント設定
+        "terminal.integrated.fontFamily": "'Cascadia Code'",
+        "terminal.integrated.fontSize": 12,
+        "python.analysis.exclude": [
+            "./local/*"
+        ],
+    },
+}
